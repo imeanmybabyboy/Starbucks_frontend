@@ -1,0 +1,108 @@
+main {
+    flex: 1;
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.footer {
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+.navbar-nav {
+    font-family: "Fira Mono", monospace;
+    font-weight: 600;
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.navbar-nav li * {
+    transition: none;
+}
+
+.navbar-nav li *:hover {
+    color: #00704a !important;
+}
+
+#authContainer * {
+    white-space: nowrap;
+    font-weight: 500;
+    transition: 0.3s;
+    box-shadow: none;
+}
+
+#authContainer *:active {
+    scale: 0.95;
+}
+
+.btn-dark {
+    --bs-btn-bg: #000000;
+    color: #FFF !important;
+}
+
+.btn-outline-dark {
+    --bs-btn-hover-bg: #e5e5e5;
+    --bs-btn-hover-color: #000;
+    --bs-btn-active-bg: #e5e5e5;
+    --bs-btn-active-color: #000;
+}
+
+#find-store:hover {
+    color: #00754A !important;
+}
+
+#account-dropdown {
+    transform: translate(-45px, 38px);
+    border-top: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    z-index: 1;
+}
+
+#animated-chevron {
+    display: block;
+}
+
+#animated-chevron.open {
+    animation: open-nav 0.2s linear forwards;
+}
+
+#animated-chevron.close {
+    animation: close-nav 0.2s linear forwards;
+}
+
+@keyframes open-nav {
+    0%{
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes close-nav {
+    0% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+#account-dropdown li * {
+    color: black;
+    padding: 20px 30px;
+}
+
+#account-dropdown li *:hover {
+    background-color: #FFF;
+}
