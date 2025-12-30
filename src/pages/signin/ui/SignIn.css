@@ -1,0 +1,84 @@
+.form-floating {
+    width: 450px;
+}
+
+.invalid-feedback {
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: .2s;
+}
+
+#submit-btn {
+    transition: .15s;
+    align-self: flex-end;
+}
+
+#checkChecked {
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    background-color: #FFF;
+    border: 1px solid #00754A;
+}
+
+    #checkChecked:checked {
+        background-color: #00754A;
+    }
+
+#details, #forgot-username, #forgot-password {
+    color: #00754A;
+}
+
+    #details:hover, #forgot-username:hover, #forgot-password:hover {
+        text-decoration: none !important;
+    }
+
+.popover {
+    border: 2px solid #CBA258 !important;
+    border-radius: 15px;
+    max-width: 300px;
+    box-shadow: 0 0 3px 0px !important;
+    background-color: #FAF6EE !important;
+    font-weight: 500;
+}
+
+.btn-outline-success {
+    --bs-btn-hover-bg: #EBF7F2 !important;
+    --bs-btn-hover-color: #00754A !important;
+    --bs-btn-active-bg: #EBF7F2 !important;
+    --bs-btn-active-color: #00754A !important;
+}
+
+#sign-up {
+    transition: .2s;
+    box-shadow: none;
+}
+
+    #sign-up:active {
+        scale: 0.95;
+    }
+
+#live-alert-placeholder {
+    width: 28.1rem !important;
+}
+
+.form-floating label::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 30px;
+    background-color: #fff;
+    z-index: -1;
+    text-align: center;
+    margin-left: -10px;
+    border-radius: 10px;
+}
+
+.invalid-feedback {
+    align-items: center;
+    gap: 100px;
+}
+
+h3 {
+    font-family: 'Quicksand', sans-serif;
+}
