@@ -1,0 +1,23 @@
+#personal-information-header {
+    width: 40%;
+    height: 72vh !important;
+}
+
+#personal-information-body {
+    width: 60% !important;
+    background-color: #F9F9F9;
+}
+
+.py-lg-6 {
+    padding: 6rem 0;
+}
+
+#btn-profile-edit {
+    transition: .15s;
+}
+
+.alert-center {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}

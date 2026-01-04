@@ -1,20 +1,98 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import "./ui/Layout.css";
 import { useContext, useEffect, useRef, useState } from "react";
-import AppContext from "../context/AppContext";
+import AppContext from "../context/authContext/AuthContext";
+import LayoutContext from "../context/layoutContext/LayoutContext";
 
 export default function Layout() {
     const location = useLocation();
-    const { user, setUser } = useContext(AppContext)!;
+
+    // contexts
+    const { user, setUser, isAuthLoading, setIsAuthLoading } =
+        useContext(AppContext)!;
+    const { isMainShifted, setIsMainShifted } = useContext(LayoutContext)!;
+
     const [isNavHidden, setIsNavHidden] = useState<boolean>(false);
     const [isAccountNavOpen, setIsAccountNavOpen] = useState(false);
+    const accountDropdownRef = useRef<HTMLUListElement>(null);
 
     useEffect(() => {
+        // hide nav bar
         location.pathname.includes("signin") ||
         location.pathname.includes("register")
             ? setIsNavHidden(true)
             : setIsNavHidden(false);
-    }, [location]);
+
+        // set checked page nav styles
+        for (let item of document.querySelectorAll(
+            "[data-pages-nav]"
+        ) as NodeListOf<HTMLAnchorElement>) {
+            let currentPage = item.href.slice(item.href.lastIndexOf("/"));
+            if (currentPage === location.pathname) {
+                item.classList.add("active-page");
+            } else {
+                item.classList.remove("active-page");
+            }
+        }
+
+        // hide account navbar
+        if (!accountDropdownRef.current) return;
+        accountDropdownRef.current.classList.remove("show");
+        setIsAccountNavOpen(false);
+
+        // add "container" class to main
+        if (!isMainShifted) {
+            setIsMainShifted(true);
+        }
+    }, [location.pathname]);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            setIsAuthLoading(true);
+            try {
+                const res = await fetch(
+                    "https://localhost:7174/User/ApiAuthenticate",
+                    {
+                        method: "GET",
+                        credentials: "include",
+                    }
+                );
+
+                if (!res.ok) {
+                    setUser(null);
+                    return;
+                }
+
+                const data = await res.json();
+                if (data.status?.toLowerCase() === "ok" && data.user) {
+                    setUser(data.user);
+                } else {
+                    setUser(null);
+                }
+            } catch (error) {
+                console.error(`Failed to fatch user: ${error}`);
+                setUser(null);
+            } finally {
+                setIsAuthLoading(false);
+            }
+        };
+        fetchUser();
+    }, [setUser]);
+
+    const logout = () => {
+        fetch("https://localhost:7174/User/ApiLogout", {
+            credentials: "include",
+            method: "POST",
+        })
+            .then((r) => r.json())
+            .then((j) => {
+                if (j.status.toLowerCase() === "ok") {
+                    setUser(null);
+                } else {
+                    alert(j.error);
+                }
+            });
+    };
 
     return (
         <>
@@ -53,6 +131,7 @@ export default function Layout() {
                                             <Link
                                                 to="menu"
                                                 className="nav-link text-dark fw-bold"
+                                                data-pages-nav
                                             >
                                                 Menu
                                             </Link>
@@ -61,6 +140,7 @@ export default function Layout() {
                                             <Link
                                                 to="rewards"
                                                 className="nav-link text-dark fw-bold"
+                                                data-pages-nav
                                             >
                                                 Rewards
                                             </Link>
@@ -69,6 +149,7 @@ export default function Layout() {
                                             <Link
                                                 to="giftcards"
                                                 className="nav-link text-dark fw-bold"
+                                                data-pages-nav
                                             >
                                                 Gift cards
                                             </Link>
@@ -81,6 +162,7 @@ export default function Layout() {
                                             id="find-store"
                                             className="d-flex align-items-center gap-2 fw-bold text-decoration-none"
                                             role="button"
+                                            data-pages-nav
                                             style={{ color: "#000" }}
                                         >
                                             <i className="bi bi-geo-alt-fill fs-5"></i>{" "}
@@ -123,11 +205,15 @@ export default function Layout() {
                                                         backgroundColor:
                                                             "#F9F9F9",
                                                     }}
+                                                    ref={accountDropdownRef}
                                                 >
                                                     <li>
-                                                        <a className="dropdown-item">
+                                                        <Link
+                                                            to="/personal"
+                                                            className="dropdown-item"
+                                                        >
                                                             Personal info
-                                                        </a>
+                                                        </Link>
                                                     </li>
                                                     <li>
                                                         <a
@@ -149,7 +235,10 @@ export default function Layout() {
                                                     <li>
                                                         <a
                                                             className="dropdown-item"
-                                                            href="?logout"
+                                                            href="#!"
+                                                            onClick={() => {
+                                                                logout();
+                                                            }}
                                                         >
                                                             Sign out
                                                         </a>
@@ -184,13 +273,13 @@ export default function Layout() {
                     </div>
                 </nav>
             </header>
-            <main className="container">
+            <main className={`${isMainShifted ? "container" : null}`}>
                 <Outlet />
             </main>
             <footer className="border-top footer text-muted">
                 <div className="container">
                     &copy; 2025 - ASP_Starbucks -{" "}
-                    <Link to="Privacy">Privacy</Link>
+                    <Link to="privacy">Privacy</Link>
                 </div>
             </footer>{" "}
         </>

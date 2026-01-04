@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import "./ui/SignIn.css";
 import InputValidation from "../shared/InputValidation/InputValidation";
 import Base64 from "../shared/base64/Base64";
-import AppContext from "../../features/context/AppContext";
+import AppContext from "../../features/context/authContext/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as bootstrap from "bootstrap";
 import { Link } from "react-router-dom";
@@ -125,6 +125,7 @@ export default function SignIn() {
                     headers: {
                         Authorization: "Basic " + basicCredentials,
                     },
+                    credentials: "include",
                 })
                     .then((r) => r.json())
                     .then((j) => {
@@ -132,7 +133,9 @@ export default function SignIn() {
                         submitBtn.classList.remove("loading");
 
                         if (j.status.toString().toLowerCase() === "ok") {
-                            // window.location.href = "/";
+                            window.location.href = "/";
+                            console.log(j);
+
                             setUser(j.user);
                         } else {
                             handleInvalidSignin(j.error, "danger");
@@ -318,7 +321,8 @@ export default function SignIn() {
                     >
                         Forgot your username?
                     </div>
-                    <Link to="/forgotPassword"
+                    <Link
+                        to="/forgotPassword"
                         id="forgot-password"
                         className="fw-bold text-decoration-underline user-select-none"
                         asp-controller="User"
@@ -359,7 +363,8 @@ export default function SignIn() {
                     best offers and celebrate your birthday with a treat from
                     us. Best of all, it's free to join.
                 </p>
-                <Link to="/register"
+                <Link
+                    to="/register"
                     asp-controller="User"
                     asp-action="Create"
                     id="sign-up"
