@@ -1,0 +1,25 @@
+#start-order:hover {
+    background-color: #00754A;
+    color: #FFF;
+}
+
+a.btn {
+    transition: .2s;
+}
+
+#explore-pistachio:hover
+ {
+    background-color: #DCE4DA !important;
+}
+
+#order-in-app:hover {
+    background-color: #004E35;
+}
+
+#join-now:hover {
+    background-color: #188259;
+}
+
+a.btn:active {
+    scale: 0.95;
+}

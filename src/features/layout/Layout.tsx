@@ -3,18 +3,39 @@ import "./ui/Layout.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import AppContext from "../context/authContext/AuthContext";
 import LayoutContext from "../context/layoutContext/LayoutContext";
+import Footer from "../../pages/footer/Footer";
 
 export default function Layout() {
     const location = useLocation();
 
     // contexts
-    const { user, setUser, isAuthLoading, setIsAuthLoading } =
-        useContext(AppContext)!;
-    const { isMainShifted, setIsMainShifted } = useContext(LayoutContext)!;
+    const { user, setUser, setIsAuthLoading } = useContext(AppContext)!;
+    const { isMainShifted, setIsMainShifted, isHeroPage, setIsHeroPage } =
+        useContext(LayoutContext)!;
 
     const [isNavHidden, setIsNavHidden] = useState<boolean>(false);
     const [isAccountNavOpen, setIsAccountNavOpen] = useState(false);
     const accountDropdownRef = useRef<HTMLUListElement>(null);
+
+    useEffect(() => {
+        // according to page type and size, add class "container" or remove it
+        const handleResize = () => {
+            if (
+                (window.innerWidth <= 2500 && isHeroPage) ||
+                (window.innerWidth <= 1500 && !isHeroPage)
+            ) {
+                setIsMainShifted(false);
+            } else {
+                setIsMainShifted(true);
+            }
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [isHeroPage]);
 
     useEffect(() => {
         // hide nav bar
@@ -36,14 +57,20 @@ export default function Layout() {
         }
 
         // hide account navbar
-        if (!accountDropdownRef.current) return;
-        accountDropdownRef.current.classList.remove("show");
-        setIsAccountNavOpen(false);
-
-        // add "container" class to main
-        if (!isMainShifted) {
-            setIsMainShifted(true);
+        if (accountDropdownRef.current) {
+            accountDropdownRef.current.classList.remove("show");
+            setIsAccountNavOpen(false);
         }
+
+        // set hero page
+        if (location.pathname === "/personal") {
+            setIsHeroPage(true);
+        } else {
+            setIsHeroPage(false);
+        }
+        
+        // move to the top of the page when location is changed
+        window.scrollTo(0, 0);
     }, [location.pathname]);
 
     useEffect(() => {
@@ -273,15 +300,13 @@ export default function Layout() {
                     </div>
                 </nav>
             </header>
-            <main className={`${isMainShifted ? "container" : null}`}>
+            <main className={`${isMainShifted ? "container" : ""}`}>
                 <Outlet />
             </main>
-            <footer className="border-top footer text-muted">
-                <div className="container">
-                    &copy; 2025 - ASP_Starbucks -{" "}
-                    <Link to="privacy">Privacy</Link>
-                </div>
-            </footer>{" "}
+
+            <footer className="footer border-top border-2 shadow-sm mt-3">
+                <Footer />
+            </footer>
         </>
     );
 }

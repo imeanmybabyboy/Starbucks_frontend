@@ -1,0 +1,64 @@
+.footer h5 {
+    font-weight: 600 !important;
+    max-width: 180px;
+}
+
+#useful-links-container .list-group {
+    width: fit-content;
+    margin-top: 2rem;
+    max-width: 180px;
+}
+
+#useful-links-container .list-group-item {
+    border: 0 !important;
+    padding: 0px !important;
+    margin: 0 !important;
+    line-height: normal;
+}
+
+#useful-links-container .list-group-item a {
+    color: #6b6b6b;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    white-space: normal;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+#useful-links-container .list-group-item a:hover {
+    color: #000;
+}
+
+.footer {
+    font-family: "Quicksand", sans-serif;
+}
+
+svg {
+    cursor: pointer;
+}
+
+.sb-icon-hover {
+    fill: transparent;
+    transition: 0.2s;
+}
+
+svg:hover .sb-icon-hover {
+    fill: rgba(128, 128, 128, 0.248);
+}
+
+#social a {
+    color: #000;
+}
+
+#legal-section {
+    width: fit-content;
+}
+
+#legal-section .list-group-item {
+    line-height: normal;
+}
+
+#legal-section a {
+    color: #000;
+}
+

@@ -20,12 +20,15 @@ export default function App() {
     const [user, setUser] = useState<IUser | null>(null);
     const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
     const [isMainShifted, setIsMainShifted] = useState(true);
+    const [isHeroPage, setIsHeroPage] = useState<boolean>(false);
 
     return (
         <AuthContext.Provider
             value={{ user, setUser, isAuthLoading, setIsAuthLoading }}
         >
-            <LayoutContext.Provider value={{ isMainShifted, setIsMainShifted }}>
+            <LayoutContext.Provider
+                value={{ isMainShifted, setIsMainShifted, isHeroPage, setIsHeroPage }}
+            >
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Layout />}>

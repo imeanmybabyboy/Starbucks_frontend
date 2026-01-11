@@ -115,12 +115,12 @@ a[data-pages-nav].active-page::after {
     position: absolute;
     content: '';
     width: 100%;
-    border-bottom: 5px solid #00754A;
+    border-bottom: 3px solid #00754A;
     left: 0;
-    bottom: -100%;
+    top: 100%;
     transform: translateY(-100%);
 }
 
 #find-store.active-page::after {
-    bottom: -150%;
+    top: 100%;
 }
