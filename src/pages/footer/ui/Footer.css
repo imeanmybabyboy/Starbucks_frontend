@@ -1,6 +1,5 @@
 .footer h5 {
     font-weight: 600 !important;
-    max-width: 180px;
 }
 
 #useful-links-container .list-group {
@@ -62,3 +61,29 @@ svg:hover .sb-icon-hover {
     color: #000;
 }
 
+.bi-chevron-down.open {
+    animation: open-nav 0.2s linear forwards;
+}
+
+.bi-chevron-down.close {
+    animation: close-nav 0.2s linear forwards;
+}
+
+@keyframes open-nav {
+    0%{
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes close-nav {
+    0% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

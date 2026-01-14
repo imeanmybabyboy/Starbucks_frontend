@@ -2,6 +2,46 @@ import { Link } from "react-router-dom";
 import "./ui/Home.css";
 
 export default function Home() {
+    window.addEventListener("resize", () => {
+        for (let item of document.querySelectorAll("[data-home-content]")) {
+            if (window.innerWidth < 750) {
+                // addding flex column to all divs
+                item.classList.add("flex-column");
+
+                // removing width to img and div to make their width 100%
+                item.querySelector("img")?.classList.remove("w-50");
+                item.querySelector("div")?.classList.remove("w-50");
+
+                // removing flex-row-reverse
+                if (item.classList.contains("flex-row-reverse")) {
+                    item.classList.remove("flex-row-reverse");
+                }
+            } else if (window.innerWidth >= 750) {
+                // removing flex column to all divs
+                item.classList.remove("flex-column");
+
+                // adding width to img and div to make their width 50%
+                item.querySelector("img")?.classList.add("w-50");
+                item.querySelector("div")?.classList.add("w-50");
+
+                // adding flex-row-reverse to items that have such attribute
+                if (item.hasAttribute("data-flex-row-reverse")) {
+                    item.classList.add("flex-row-reverse");
+                }
+            }
+        }
+
+        for (let item of document.querySelectorAll("p")) {
+            if (window.innerWidth < 750) {
+                item.classList.remove("w-50")
+                item.classList.add("m-3")
+            } else if (window.innerWidth >= 750) {
+                item.classList.add("w-50")
+                item.classList.remove("m-3")
+            }
+        }
+    });
+
     return (
         <div className="d-flex flex-column gap-4">
             <h2
@@ -21,17 +61,18 @@ export default function Home() {
                 </Link>
             </h2>
 
-            <div className="d-flex">
+            <div
+                className="d-flex"
+                data-home-content
+                style={{ backgroundColor: "#006342" }}
+            >
                 <img
                     src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105306.jpg"
                     alt="caramel-protein"
-                    className="w-50"
+                    className="w-50 object-fit-contain"
                 />
 
-                <div
-                    className="w-50 d-flex flex-column align-items-center justify-content-center gap-4"
-                    style={{ backgroundColor: "#006342" }}
-                >
+                <div className="w-50 p-3 d-flex flex-column align-items-center justify-content-center gap-4">
                     <h4 className="link-light fs-3">Caramel protein is here</h4>
                     <div
                         className="w-75 fs-5 text-center link-light"
@@ -53,18 +94,26 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="d-flex">
+            <div
+                className="d-flex flex-row-reverse"
+                data-home-content
+                data-flex-row-reverse
+                style={{ backgroundColor: "#F5F1EB" }}
+            >
+                <img
+                    src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105315.jpg"
+                    alt="pistachio"
+                    className="w-50 object-fit-contain"
+                />
+
                 <div
-                    className="w-50 d-flex flex-column align-items-center justify-content-center gap-4"
+                    className="w-50 p-3 d-flex flex-column align-items-center justify-content-center gap-4"
                     style={{
-                        backgroundColor: "#F5F1EB",
                         color: "#006342",
                         lineHeight: "2rem",
                     }}
                 >
-                    <h4 className="fs-3" style={{}}>
-                        Hello, pistachio
-                    </h4>
+                    <h4 className="fs-3">Hello, pistachio</h4>
                     <div className="w-75 fs-5 text-center">
                         A beloved flavor is back with the delicious new
                         Pistachio Cortado, Pistachio Cream Cold Brew and
@@ -84,25 +133,20 @@ export default function Home() {
                         Explore pistachio
                     </Link>
                 </div>
-
-                <img
-                    src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105315.jpg"
-                    alt="pistachio"
-                    className="w-50"
-                />
             </div>
 
-            <div className="d-flex">
+            <div
+                className="d-flex"
+                data-home-content
+                style={{ backgroundColor: "#006342", lineHeight: "2rem" }}
+            >
                 <img
                     src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105422.jpg"
                     alt="snack-smart-with-Khloé-Kardashian"
-                    className="w-50"
+                    className="w-50 object-fit-contain"
                 />
 
-                <div
-                    className="w-50 d-flex flex-column align-items-center justify-content-center gap-4 link-light"
-                    style={{ backgroundColor: "#006342", lineHeight: "2rem" }}
-                >
+                <div className="w-50 p-3 d-flex flex-column align-items-center justify-content-center gap-4 link-light">
                     <h4 className="fs-3">Snack smart with Khloé Kardashian</h4>
                     <div className="w-75 fs-5 text-center">
                         Fuel your day and order Khloé’s secret menu protein
@@ -119,15 +163,23 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="d-flex">
-                <div
-                    className="w-50 d-flex flex-column align-items-center justify-content-center gap-4"
-                    style={{
-                        color: "#5F4633",
-                        lineHeight: "2rem",
-                        backgroundColor: "#F7F0E4",
-                    }}
-                >
+            <div
+                className="d-flex flex-row-reverse"
+                data-home-content
+                data-flex-row-reverse
+                style={{
+                    color: "#5F4633",
+                    lineHeight: "2rem",
+                    backgroundColor: "#F7F0E4",
+                }}
+            >
+                <img
+                    src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105320.jpg"
+                    alt="free-coffee"
+                    className="w-50 object-fit-contain"
+                />
+
+                <div className="w-50 p-3 d-flex flex-column align-items-center justify-content-center gap-4">
                     <h4 className="fs-3">
                         But first, <i>free</i> coffee
                     </h4>
@@ -144,32 +196,25 @@ export default function Home() {
                         Join now
                     </Link>
                 </div>
-
-                <img
-                    src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105320.jpg"
-                    alt="free-coffee"
-                    className="w-50"
-                />
             </div>
 
-            <div className="d-flex">
+            <div
+                className="d-flex"
+                data-home-content
+                style={{
+                    backgroundColor: "#F5F1EB",
+                    color: "#006342",
+                    lineHeight: "1.5rem",
+                }}
+            >
                 <img
                     src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105359.jpg"
                     alt="free-refills"
-                    className="w-50"
+                    className="w-50 object-fit-contain"
                 />
 
-                <div
-                    className="w-50 d-flex flex-column align-items-center justify-content-center gap-4"
-                    style={{
-                        backgroundColor: "#F5F1EB",
-                        color: "#006342",
-                        lineHeight: "1.5rem",
-                    }}
-                >
-                    <h4 className="fs-5" style={{}}>
-                        Grab a seat. Get free refills.
-                    </h4>
+                <div className="w-50 p-3 d-flex flex-column align-items-center justify-content-center gap-4">
+                    <h4 className="fs-5">Grab a seat. Get free refills.</h4>
                     <div className="w-75 fs-6 text-center">
                         When you stay to enjoy your favorite beverage in the
                         café, refills of hot and iced brewed coffee or tea are
@@ -190,11 +235,19 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="d-flex">
-                <div
-                    className="w-50 d-flex flex-column align-items-center justify-content-center gap-4 link-light"
-                    style={{ backgroundColor: "#006342", lineHeight: "1.5rem" }}
-                >
+            <div
+                className="d-flex flex-row-reverse"
+                data-home-content
+                data-flex-row-reverse
+                style={{ backgroundColor: "#006342", lineHeight: "1.5rem" }}
+            >
+                <img
+                    src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105361.jpg"
+                    alt="non-dairy-choices"
+                    className="w-50 object-fit-contain"
+                />
+
+                <div className="w-50 p-3 d-flex flex-column align-items-center justify-content-center gap-4 link-light">
                     <h4 className="fs-5">Nondairy choices. No extra charge.</h4>
                     <div className="w-75 fs-6 text-center">
                         Try your hot or iced favorite with nondairy milk. Choose
@@ -209,12 +262,6 @@ export default function Home() {
                         Order now
                     </Link>
                 </div>
-
-                <img
-                    src="https://content-prod-live.cert.starbucks.com/binary/v2/asset/137-105361.jpg"
-                    alt="non-dairy-choices"
-                    className="w-50"
-                />
             </div>
 
             <p

@@ -1,165 +1,320 @@
 import { Link } from "react-router-dom";
 import "./ui/Footer.css";
+import { useEffect } from "react";
+import * as bootstrap from "bootstrap";
 
 export default function Footer() {
+    useEffect(() => {
+        const handleFlexDirection = () => {
+            const linksParent = document.getElementById(
+                "useful-links-container"
+            );
+            if (!linksParent) return;
+
+            if (window.innerWidth <= 850) {
+                linksParent.classList.add("flex-column");
+            } else {
+                linksParent.classList.remove("flex-column");
+            }
+        };
+
+        const handleCollapse = () => {
+            const items = document.querySelectorAll<HTMLElement>(
+                "[data-collapse-item]"
+            );
+
+            for (let item of items) {
+                const collapseDiv = item.querySelector<HTMLDivElement>("div")!;
+                const button = item.querySelector<HTMLButtonElement>("button")!;
+                const header5 = item.querySelector<HTMLHeadingElement>("h5")!;
+                const chevron =
+                    button.querySelector<HTMLElement>(".bi-chevron-down")!;
+
+                if (!collapseDiv && !button && !header5 && !chevron) return;
+
+                collapseDiv.classList.remove("collapse");
+
+                button.style.pointerEvents = "none";
+                button.classList.remove("w-100");
+
+                header5.classList.add("text-wrap");
+                header5.style.maxWidth = "180px";
+
+                chevron.style.display = "none";
+                chevron.classList.remove("close");
+                chevron.classList.remove("open");
+
+                // deleting old instance
+                const oldInstance = bootstrap.Collapse.getInstance(collapseDiv);
+                if (oldInstance) {
+                    oldInstance.dispose();
+                }
+
+                button.onclick = null;
+
+                if (window.innerWidth <= 850) {
+                    collapseDiv.classList.add("collapse");
+                    chevron.style.display = "block";
+
+                    collapseDiv.addEventListener("show.bs.collapse", () => {
+                        chevron.classList.add("open");
+                        chevron.classList.remove("close");
+                    });
+
+                    collapseDiv.addEventListener("hide.bs.collapse", () => {
+                        chevron.classList.remove("open");
+                        chevron.classList.add("close");
+                    });
+
+                    button.style.pointerEvents = "all";
+                    button.classList.add("w-100");
+
+                    header5.classList.remove("text-wrap");
+                    header5.style.maxWidth = "100%";
+
+                    const collapseInstance = new bootstrap.Collapse(
+                        collapseDiv,
+                        {
+                            toggle: false,
+                        }
+                    );
+
+                    button.onclick = () => collapseInstance.toggle();
+                }
+            }
+        };
+
+        const handleResize = () => {
+            handleCollapse();
+            handleFlexDirection();
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
     return (
         <div className="container py-4" id="container">
-            <div className="d-flex gap-5" id="useful-links-container">
-                <div>
-                    <h5>About Us</h5>
-                    <ul className="list-group" id="useful-links">
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Our Company
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Our Coffee
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                About Starbucks
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Starbucks Archieve
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Investor Relations
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Customer Service
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Contact Us
-                            </Link>
-                        </li>
-                    </ul>
+            <div className="d-flex gap-4" id="useful-links-container">
+                <div data-collapse-item>
+                    <h5 className="user-select-none">
+                        <button
+                            className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
+                            type="button"
+                        >
+                            <span>About Us</span>
+
+                            <i className="bi bi-chevron-down"></i>
+                        </button>
+                    </h5>
+
+                    <div>
+                        <ul className="list-group">
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Our Company
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Our Coffee
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    About Starbucks
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Starbucks Archieve
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Investor Relations
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Customer Service
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Contact Us
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div>
-                    <h5>Careers</h5>
-                    <ul className="list-group">
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Culture and Values
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Balonging at Starbucks
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                College Achievement Plan
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Alumni Community
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                U.S. Careers
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                International Careers
-                            </Link>
-                        </li>
-                    </ul>
+                <div data-collapse-item>
+                    <h5 className="user-select-none">
+                        <button
+                            className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
+                            type="button"
+                        >
+                            <span>Careers</span>
+                            <i className="bi bi-chevron-down"></i>
+                        </button>
+                    </h5>
+
+                    <div>
+                        <ul className="list-group">
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Culture and Values
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Balonging at Starbucks
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    College Achievement Plan
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Alumni Community
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    U.S. Careers
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    International Careers
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div>
-                    <h5>Social Impact</h5>
-                    <ul className="list-group">
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Communities
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Starbucks Foundation
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Sustainability
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Environmental and Social Impact Reporting
-                            </Link>
-                        </li>
-                    </ul>
+
+                <div data-collapse-item>
+                    <h5 className="user-select-none">
+                        <button
+                            className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
+                            type="button"
+                        >
+                            <span>Social Impact</span>
+
+                            <i className="bi bi-chevron-down"></i>
+                        </button>
+                    </h5>
+
+                    <div>
+                        <ul className="list-group">
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Communities
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Starbucks Foundation
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Sustainability
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Environmental and Social Impact Reporting
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div>
-                    <h5 className="text-wrap">For Business Partners</h5>
-                    <ul className="list-group">
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Landlord Support
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Suppliers
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Corporate Gift Card Sales
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Office and Foodservice Coffee
-                            </Link>
-                        </li>
-                    </ul>
+
+                <div data-collapse-item>
+                    <h5 className="user-select-none">
+                        <button
+                            className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
+                            type="button"
+                        >
+                            <span>For Business Partners</span>
+                            <i className="bi bi-chevron-down"></i>
+                        </button>
+                    </h5>
+
+                    <div>
+                        <ul className="list-group">
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Landlord Support
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Suppliers
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Corporate Gift Card Sales
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Office and Foodservice Coffee
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div>
-                    <h5>Order and Pick Up</h5>
-                    <ul className="list-group">
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Order on the App
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Order on the Web
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Delivery
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Order and Pick Up Options
-                            </Link>
-                        </li>
-                        <li className="list-group-item">
-                            <Link className="text-decoration-none" to="/">
-                                Explore and Find Coffee for Home
-                            </Link>
-                        </li>
-                    </ul>
+
+                <div data-collapse-item>
+                    <h5 className="user-select-none">
+                        <button
+                            className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
+                            type="button"
+                        >
+                            <span>Order and Pick Up</span>
+                            <i className="bi bi-chevron-down"></i>
+                        </button>
+                    </h5>
+
+                    <div>
+                        <ul className="list-group">
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Order on the App
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Order on the Web
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Delivery
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Order and Pick Up Options
+                                </Link>
+                            </li>
+                            <li className="list-group-item">
+                                <Link className="text-decoration-none" to="/">
+                                    Explore and Find Coffee for Home
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -342,13 +497,62 @@ export default function Footer() {
             </div>
 
             <ul id="legal-section" className="list-group mt-4">
-                <li className="list-group-item p-0 fw-bold border-0"><Link className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" to="/">Privacy Notice</Link></li>
-                <li className="list-group-item p-0 fw-bold border-0 mt-4"><Link className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" to="/">Consumer Health Privacy Notice</Link></li>
-                <li className="list-group-item p-0 fw-bold border-0 mt-4"><Link className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" to="/">Terms of Use</Link></li>
-                <li className="list-group-item p-0 fw-bold border-0 mt-4"><Link className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" to="/">Do Not Sell or Share My Personal Information</Link></li>
-                <li className="list-group-item p-0 fw-bold border-0 mt-4"><Link className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" to="/">CA Supply Chain Act</Link></li>
-                <li className="list-group-item p-0 fw-bold border-0 mt-4"><Link className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" to="/">Accessibility</Link></li>
-                <li className="list-group-item p-0 fw-bold border-0 mt-4"><Link className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover" to="/">Cookie Preference</Link></li>
+                <li className="list-group-item p-0 fw-bold border-0">
+                    <Link
+                        className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                        to="/"
+                    >
+                        Privacy Notice
+                    </Link>
+                </li>
+                <li className="list-group-item p-0 fw-bold border-0 mt-4">
+                    <Link
+                        className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                        to="/"
+                    >
+                        Consumer Health Privacy Notice
+                    </Link>
+                </li>
+                <li className="list-group-item p-0 fw-bold border-0 mt-4">
+                    <Link
+                        className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                        to="/"
+                    >
+                        Terms of Use
+                    </Link>
+                </li>
+                <li className="list-group-item p-0 fw-bold border-0 mt-4">
+                    <Link
+                        className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                        to="/"
+                    >
+                        Do Not Sell or Share My Personal Information
+                    </Link>
+                </li>
+                <li className="list-group-item p-0 fw-bold border-0 mt-4">
+                    <Link
+                        className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                        to="/"
+                    >
+                        CA Supply Chain Act
+                    </Link>
+                </li>
+                <li className="list-group-item p-0 fw-bold border-0 mt-4">
+                    <Link
+                        className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                        to="/"
+                    >
+                        Accessibility
+                    </Link>
+                </li>
+                <li className="list-group-item p-0 fw-bold border-0 mt-4">
+                    <Link
+                        className="w-100 link-underline-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                        to="/"
+                    >
+                        Cookie Preference
+                    </Link>
+                </li>
             </ul>
 
             <div className="mt-4 fw-bold text-secondary">
