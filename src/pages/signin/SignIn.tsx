@@ -232,7 +232,10 @@ export default function SignIn() {
                             * Username or email address
                         </label>
 
-                        <div className="invalid-feedback ps-2 fs-6 gap-1 align-items-center">
+                        <div
+                            className="invalid-feedback ps-2 fs-6 gap-1 align-items-center"
+                            data-validation-container
+                        >
                             <svg
                                 xmlns="http:www.w3.org/2000/svg"
                                 width="16"
@@ -266,7 +269,10 @@ export default function SignIn() {
                             * Password
                         </label>
 
-                        <div className="invalid-feedback ps-2 fs-6 gap-1 align-items-center">
+                        <div
+                            className="invalid-feedback ps-2 fs-6 gap-1 align-items-center"
+                            data-validation-container
+                        >
                             <svg
                                 xmlns="http:www.w3.org/2000/svg"
                                 width="16"

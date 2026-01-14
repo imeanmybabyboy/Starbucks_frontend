@@ -260,7 +260,7 @@ export default function Personal() {
 
                                 <div
                                     className="invalid-feedback ps-2 fs-6 gap-1 align-items-center"
-                                    id="validation-container"
+                                    data-validation-container
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -297,7 +297,7 @@ export default function Personal() {
 
                                 <div
                                     className="invalid-feedback ps-2 fs-6 gap-1 align-items-center"
-                                    id="validation-container"
+                                    data-validation-container
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -333,7 +333,7 @@ export default function Personal() {
 
                                 <div
                                     className="invalid-feedback ps-2 fs-6 gap-1 align-items-center"
-                                    id="validation-container"
+                                    data-validation-container
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

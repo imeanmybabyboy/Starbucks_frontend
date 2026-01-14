@@ -106,7 +106,7 @@ export default function Footer() {
                             className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
                             type="button"
                         >
-                            <span>About Us</span>
+                            <span className="text-start">About Us</span>
 
                             <i className="bi bi-chevron-down"></i>
                         </button>
@@ -159,7 +159,7 @@ export default function Footer() {
                             className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
                             type="button"
                         >
-                            <span>Careers</span>
+                            <span className="text-start">Careers</span>
                             <i className="bi bi-chevron-down"></i>
                         </button>
                     </h5>
@@ -206,7 +206,7 @@ export default function Footer() {
                             className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
                             type="button"
                         >
-                            <span>Social Impact</span>
+                            <span className="text-start">Social Impact</span>
 
                             <i className="bi bi-chevron-down"></i>
                         </button>
@@ -244,7 +244,7 @@ export default function Footer() {
                             className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
                             type="button"
                         >
-                            <span>For Business Partners</span>
+                            <span className="text-start">For Business Partners</span>
                             <i className="bi bi-chevron-down"></i>
                         </button>
                     </h5>
@@ -281,7 +281,7 @@ export default function Footer() {
                             className="navbar-toggler py-2 d-flex align-items-center justify-content-between"
                             type="button"
                         >
-                            <span>Order and Pick Up</span>
+                            <span className="text-start">Order and Pick Up</span>
                             <i className="bi bi-chevron-down"></i>
                         </button>
                     </h5>

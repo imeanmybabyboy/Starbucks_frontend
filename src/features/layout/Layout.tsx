@@ -49,7 +49,7 @@ export default function Layout() {
             "[data-pages-nav]"
         ) as NodeListOf<HTMLAnchorElement>) {
             let currentPage = item.href.slice(item.href.lastIndexOf("/"));
-            if (currentPage === location.pathname) {
+            if (location.pathname.includes(currentPage)) {
                 item.classList.add("active-page");
             } else {
                 item.classList.remove("active-page");
@@ -304,7 +304,7 @@ export default function Layout() {
                 <Outlet />
             </main>
 
-            <footer className="footer border-top border-2 shadow-sm mt-3">
+            <footer className={`footer border-top border-2 shadow-sm ${!isHeroPage ? "mt-2" : ""}`}>
                 <Footer />
             </footer>
         </>

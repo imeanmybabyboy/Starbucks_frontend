@@ -71,8 +71,9 @@ export default class InputValidation {
         if (isRequired) {
             let value = input.value.trim();
             let validationCont = input.parentNode!?.querySelector(
-                "#validation-container"
+                "[data-validation-container]"
             ) as HTMLElement;
+
             if (value.length === 0) {
                 if (input.dataset.focused === "true") {
                     input.style.outline = "2px solid #C82014";

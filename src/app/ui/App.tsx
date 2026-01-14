@@ -15,6 +15,10 @@ import type IUser from "../../entities/user/model/IUser";
 import ForgotPassword from "../../pages/forgotPassword/ForgotPassword";
 import Privacy from "../../pages/privacy/Privacy";
 import Personal from "../../pages/personal/Personal";
+import Previous from "../../pages/previous/Previous";
+import Favorites from "../../pages/favorites/Favorites";
+import Featured from "../../pages/featured/Featured";
+import MainMenu from "../../pages/mainMenu/MainMenu";
 
 export default function App() {
     const [user, setUser] = useState<IUser | null>(null);
@@ -27,14 +31,37 @@ export default function App() {
             value={{ user, setUser, isAuthLoading, setIsAuthLoading }}
         >
             <LayoutContext.Provider
-                value={{ isMainShifted, setIsMainShifted, isHeroPage, setIsHeroPage }}
+                value={{
+                    isMainShifted,
+                    setIsMainShifted,
+                    isHeroPage,
+                    setIsHeroPage,
+                }}
             >
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Layout />}>
                             <Route index element={<Home />} />
                             {/* header navs */}
-                            <Route path="menu" element={<Menu />} />
+
+                            {/* menu nav links */}
+                            <Route path="menu" element={<Menu />}>
+                                <Route
+                                    index
+                                    element={<MainMenu />}
+                                />
+                                <Route
+                                    path="previous"
+                                    element={<Previous />}
+                                />
+                                <Route
+                                    path="favorites"
+                                    element={<Favorites />}
+                                />
+                            </Route>
+
+                            <Route path="featured" element={<Featured />} />
+
                             <Route path="rewards" element={<Rewards />} />
                             <Route path="giftcards" element={<GiftCards />} />
 
