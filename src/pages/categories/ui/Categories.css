@@ -1,0 +1,17 @@
+#add-category {
+    transition: .1s;
+}
+
+#add-category:active {
+    scale: 0.95;
+}
+
+li span {
+    font-size: 0.8rem;
+    color: #ff0800;
+    transition: .1s;
+}
+
+li span:hover {
+    transform: scale(1.05);
+}

@@ -2,55 +2,23 @@ import { useContext, useEffect } from "react";
 import "./ui/Personal.css";
 import AppContext from "../../features/context/authContext/AuthContext";
 import LayoutContext from "../../features/context/layoutContext/LayoutContext";
-import { useLocation } from "react-router-dom";
 import InputValidation from "../shared/InputValidation/InputValidation";
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as bootstrap from "bootstrap";
-
-function handleProfileEditAlert(json: Record<string, string>) {
-    const alertPlaceholder = document.getElementById("live-alert-placeholder");
-
-    const appendAlert = (message: string, type: string) => {
-        const wrapper = document.createElement("div");
-        wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible text-center fade show p-3 mx-auto" role="alert" style="transition: 1.5s !important; width: fit-content">`,
-            `   <div>${message}</div>`,
-            "</div>",
-        ].join("");
-
-        if (!alertPlaceholder) return;
-        alertPlaceholder.append(wrapper);
-
-        const alertElement = wrapper.querySelector(".alert");
-        if (!alertElement) return;
-
-        const addProductAlert =
-            bootstrap.Alert.getOrCreateInstance(alertElement);
-        window.setTimeout(() => {
-            addProductAlert.close();
-        }, 3000);
-    };
-
-    if (json.status.toLowerCase() === "ok") {
-        appendAlert(json.message, "success");
-    } else if (json.status.toLowerCase() === "error") {
-        appendAlert(json.message, "danger");
-    } else {
-        appendAlert(json.message, "warning");
-    }
-}
+import Alert from "../shared/alert/Alert";
 
 export default function Personal() {
-    const location = useLocation();
-
     const { user, isAuthLoading } = useContext(AppContext)!;
-    const { setIsMainShifted } = useContext(LayoutContext)!;
+    const { setIsHeroPage } = useContext(LayoutContext)!;
+
+    useEffect(() => {
+        setIsHeroPage(true);
+    }, []);
 
     useEffect(() => {
         // inputs validation
         if (!isAuthLoading && user) {
             for (let input of document.querySelectorAll<HTMLInputElement>(
-                "input[type='text']"
+                "input[type='text']",
             )) {
                 let firstFocus = true;
                 const label = input.parentElement?.querySelector("label")!;
@@ -58,7 +26,7 @@ export default function Personal() {
                 InputValidation.handleFilledInput(
                     input,
                     label,
-                    input.required ? true : false
+                    input.required ? true : false,
                 );
 
                 if (input !== null && label !== null) {
@@ -68,7 +36,7 @@ export default function Personal() {
                             input,
                             label,
                             input.required ? true : false,
-                            firstFocus
+                            firstFocus,
                         );
                     });
 
@@ -77,7 +45,7 @@ export default function Personal() {
                         InputValidation.checkInputFocusOut(
                             input,
                             label,
-                            input.required ? true : false
+                            input.required ? true : false,
                         );
                     });
 
@@ -85,17 +53,13 @@ export default function Personal() {
                         InputValidation.checkInputTextChange(
                             input,
                             label,
-                            input.required ? true : false
+                            input.required ? true : false,
                         );
                     });
                 }
             }
         }
     }, [user, isAuthLoading]);
-
-    useEffect(() => {
-        setIsMainShifted(false);
-    }, [location.pathname]);
 
     useEffect(() => {
         if (!isAuthLoading && !user) {
@@ -110,7 +74,7 @@ export default function Personal() {
         e.style.setProperty(
             "transform",
             "translateY(calc(-50% + 5px))",
-            "important"
+            "important",
         );
     };
     const mouseUp = (e: HTMLButtonElement) => {
@@ -130,7 +94,7 @@ export default function Personal() {
         let changes: Record<string, string> = {};
 
         const btn = document.getElementById(
-            "btn-profile-edit"
+            "btn-profile-edit",
         ) as HTMLButtonElement;
         if (!btn) return;
         const spinner = `<div class="spinner-border text-light" style="width: 25px; height: 25px" role="status">
@@ -154,24 +118,34 @@ export default function Personal() {
 
         setTimeout(() => {
             if (Object.keys(changes).length > 0) {
+                let hasValidationError = false;
+
                 for (let item of form.querySelectorAll("input")) {
                     if (
                         item.getAttribute("name") === "Name" ||
-                        item.getAttribute("Name") === "Surname"
+                        item.getAttribute("name") === "Surname"
                     ) {
-                        let isValueInvalid = item.value.length === 0;
+                        let isValueInvalid = item.value.trim().length === 0;
 
                         if (isValueInvalid) {
                             item.classList.add("is-invalid");
                             item.classList.remove("is-valid");
                             item.focus();
                             item.style.border = "2px solid #C82014";
+                            hasValidationError = true;
                         } else {
                             item.classList.add("is-valid");
                             item.classList.remove("is-invalid");
                             item.style.border = "1px solid #00754A";
                         }
                     }
+                }
+
+                if (hasValidationError) {
+                    btn.innerHTML = "Save";
+                    btn.classList.remove("loading");
+                    btn.disabled = false;
+                    return;
                 }
 
                 fetch("https://localhost:7174/User/ApiUpdate", {
@@ -188,13 +162,12 @@ export default function Personal() {
                             setTimeout(() => {
                                 window.location.reload();
                             }, 500);
-                            handleProfileEditAlert(j);
+                            Alert.handleAlert(j, "profile-edit-info-alert-placeholder");
                         } else {
-                            handleProfileEditAlert(j);
+                            Alert.handleAlert(j, "profile-edit-info-alert-placeholder");
                         }
                     });
             }
-
             btn.innerHTML = "Save";
             btn.classList.remove("loading");
             btn.disabled = false;
@@ -208,7 +181,7 @@ export default function Personal() {
         >
             <div
                 className="alert-center z-3 mt-2"
-                id="live-alert-placeholder"
+                id="profile-edit-info-alert-placeholder"
             ></div>
 
             <div
@@ -377,7 +350,7 @@ export default function Personal() {
                                     className="form-control shadow-none fs-5 py-0"
                                     id="floatingAddress2"
                                     name="Address2"
-                                    defaultValue={user?.address1}
+                                    defaultValue={user?.address2}
                                 />
                                 <label
                                     id="floatingAddress2Label"

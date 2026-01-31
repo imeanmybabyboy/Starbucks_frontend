@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type IAppContext from "./model/IAuthContext";
+import type IAuthContext from "./model/IAuthContext";
 
-const AuthContext = createContext<IAppContext | undefined>(undefined);
+const AuthContext = createContext<IAuthContext | undefined>(undefined);
 export default AuthContext;

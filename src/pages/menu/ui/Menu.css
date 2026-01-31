@@ -1,0 +1,12 @@
+a[data-menu-nav] {
+    position: relative;
+}
+
+a[data-menu-nav].active-page::after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    border-bottom: 1px solid;
+    left: 0;
+    top: 120%;
+}

@@ -72,17 +72,17 @@ export default function SignIn() {
         let passwordInvalid = password!.toString().length === 0;
 
         const emailInput = form.querySelector(
-            "input[name='user-email']"
+            "input[name='user-email']",
         ) as HTMLInputElement;
         const emailLabel = emailInput.parentElement?.querySelector(
-            "label"
+            "label",
         ) as HTMLLabelElement;
 
         const passwordInput = form.querySelector(
-            "input[name='user-password']"
+            "input[name='user-password']",
         ) as HTMLInputElement;
         const passwordLabel = passwordInput.parentElement?.querySelector(
-            "label"
+            "label",
         ) as HTMLLabelElement;
 
         // check email validation
@@ -134,9 +134,7 @@ export default function SignIn() {
 
                         if (j.status.toString().toLowerCase() === "ok") {
                             window.location.href = "/";
-                            console.log(j);
-
-                            setUser(j.user);
+                            setUser(j.data);
                         } else {
                             handleInvalidSignin(j.error, "danger");
                         }
@@ -148,7 +146,7 @@ export default function SignIn() {
     // button styles
     useEffect(() => {
         for (let input of document.querySelectorAll<HTMLInputElement>(
-            "input[type='text'], input[type='password']"
+            "input[type='text'], input[type='password']",
         )) {
             let firstFocus = true;
             const label = input.parentElement?.querySelector("label")!;
@@ -185,7 +183,7 @@ export default function SignIn() {
             "#forgot-username",
             {
                 container: "body",
-            }
+            },
         );
 
         popoverForgotUsername.setContent({
@@ -226,7 +224,7 @@ export default function SignIn() {
                             placeholder=""
                             required
                             name="user-email"
-                            defaultValue="jack.daniel@example.com"
+                            defaultValue="admin@change.me"
                         />
                         <label id="floatingEmailLabel" htmlFor="floatingEmail">
                             * Username or email address
@@ -260,7 +258,7 @@ export default function SignIn() {
                             placeholder=""
                             required
                             name="user-password"
-                            defaultValue="User"
+                            defaultValue="Admin"
                         />
                         <label
                             id="floatingPasswordLabel"

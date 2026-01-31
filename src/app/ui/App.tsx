@@ -19,12 +19,19 @@ import Previous from "../../pages/previous/Previous";
 import Favorites from "../../pages/favorites/Favorites";
 import Featured from "../../pages/featured/Featured";
 import MainMenu from "../../pages/mainMenu/MainMenu";
+import Admin from "../../pages/admin/Admin";
+import Categories from "../../pages/categories/Categories";
+import Subcategories from "../../pages/subcategories/Subcategories";
+import Products from "../../pages/products/Products";
+import AppContext from "../../features/context/appContext/AppContext";
+import type ICategory from "../../entities/category/model/ICategory";
 
 export default function App() {
     const [user, setUser] = useState<IUser | null>(null);
     const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
     const [isMainShifted, setIsMainShifted] = useState(true);
     const [isHeroPage, setIsHeroPage] = useState<boolean>(false);
+    const [categories, setCategories] = useState<Array<ICategory> | null>(null);
 
     return (
         <AuthContext.Provider
@@ -38,51 +45,67 @@ export default function App() {
                     setIsHeroPage,
                 }}
             >
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<Layout />}>
-                            <Route index element={<Home />} />
-                            {/* header navs */}
+                <AppContext.Provider value={{ categories, setCategories }}>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/" element={<Layout />}>
+                                {/* header navs */}
+                                <Route index element={<Home />} />
+                                <Route path="rewards" element={<Rewards />} />
+                                <Route
+                                    path="giftcards"
+                                    element={<GiftCards />}
+                                />
 
-                            {/* menu nav links */}
-                            <Route path="menu" element={<Menu />}>
+                                {/* menu nav links */}
+                                <Route path="menu" element={<Menu />}>
+                                    <Route index element={<MainMenu />} />
+                                    <Route
+                                        path="previous"
+                                        element={<Previous />}
+                                    />
+                                    <Route
+                                        path="favorites"
+                                        element={<Favorites />}
+                                    />
+                                </Route>
+                                <Route path="featured" element={<Featured />} />
+
+                                {/* admin nav links */}
+                                <Route path="admin" element={<Admin />}>
+                                    <Route index element={<Categories />} />
+                                    <Route
+                                        path="subcategories"
+                                        element={<Subcategories />}
+                                    />
+                                    <Route
+                                        path="products"
+                                        element={<Products />}
+                                    />
+                                </Route>
+
+                                {/* header buttons */}
+                                <Route path="signin" element={<SignIn />} />
+                                <Route path="register" element={<Register />} />
                                 <Route
-                                    index
-                                    element={<MainMenu />}
+                                    path="storesmap"
+                                    element={<StoresMap />}
                                 />
+
+                                {/* account nav links */}
+                                <Route path="personal" element={<Personal />} />
+
                                 <Route
-                                    path="previous"
-                                    element={<Previous />}
+                                    path="forgotPassword"
+                                    element={<ForgotPassword />}
                                 />
-                                <Route
-                                    path="favorites"
-                                    element={<Favorites />}
-                                />
+
+                                {/* footer */}
+                                <Route path="privacy" element={<Privacy />} />
                             </Route>
-
-                            <Route path="featured" element={<Featured />} />
-
-                            <Route path="rewards" element={<Rewards />} />
-                            <Route path="giftcards" element={<GiftCards />} />
-
-                            {/* header buttons */}
-                            <Route path="signin" element={<SignIn />} />
-                            <Route path="register" element={<Register />} />
-                            <Route path="storesmap" element={<StoresMap />} />
-
-                            {/* account nav links */}
-                            <Route path="personal" element={<Personal />} />
-
-                            <Route
-                                path="forgotPassword"
-                                element={<ForgotPassword />}
-                            />
-
-                            {/* footer */}
-                            <Route path="privacy" element={<Privacy />} />
-                        </Route>
-                    </Routes>
-                </BrowserRouter>
+                        </Routes>
+                    </BrowserRouter>
+                </AppContext.Provider>
             </LayoutContext.Provider>
         </AuthContext.Provider>
     );

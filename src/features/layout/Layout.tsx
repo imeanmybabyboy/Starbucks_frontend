@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import "./ui/Layout.css";
 import { useContext, useEffect, useRef, useState } from "react";
-import AppContext from "../context/authContext/AuthContext";
+import AuthContext from "../context/authContext/AuthContext";
 import LayoutContext from "../context/layoutContext/LayoutContext";
 import Footer from "../../pages/footer/Footer";
 
@@ -9,8 +9,8 @@ export default function Layout() {
     const location = useLocation();
 
     // contexts
-    const { user, setUser, setIsAuthLoading } = useContext(AppContext)!;
-    const { isMainShifted, setIsMainShifted, isHeroPage, setIsHeroPage } =
+    const { user, setUser, setIsAuthLoading } = useContext(AuthContext)!;
+    const { isMainShifted, setIsMainShifted, isHeroPage } =
         useContext(LayoutContext)!;
 
     const [isNavHidden, setIsNavHidden] = useState<boolean>(false);
@@ -46,7 +46,7 @@ export default function Layout() {
 
         // set checked page nav styles
         for (let item of document.querySelectorAll(
-            "[data-pages-nav]"
+            "[data-pages-nav]",
         ) as NodeListOf<HTMLAnchorElement>) {
             let currentPage = item.href.slice(item.href.lastIndexOf("/"));
             if (location.pathname.includes(currentPage)) {
@@ -62,16 +62,9 @@ export default function Layout() {
             setIsAccountNavOpen(false);
         }
 
-        // set hero page
-        if (location.pathname === "/personal") {
-            setIsHeroPage(true);
-        } else {
-            setIsHeroPage(false);
-        }
-        
         // move to the top of the page when location is changed
         window.scrollTo(0, 0);
-    }, [location.pathname]);
+    }, [location.pathname, user]);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -82,7 +75,7 @@ export default function Layout() {
                     {
                         method: "GET",
                         credentials: "include",
-                    }
+                    },
                 );
 
                 if (!res.ok) {
@@ -90,9 +83,9 @@ export default function Layout() {
                     return;
                 }
 
-                const data = await res.json();
-                if (data.status?.toLowerCase() === "ok" && data.user) {
-                    setUser(data.user);
+                const json = await res.json();
+                if (json.status?.toLowerCase() === "ok" && json.data) {
+                    setUser(json.data);
                 } else {
                     setUser(null);
                 }
@@ -196,6 +189,20 @@ export default function Layout() {
                                             Find a store
                                         </Link>
 
+                                        {user?.roleId.toLowerCase() ===
+                                        "admin" ? (
+                                            <Link
+                                                to="admin"
+                                                data-pages-nav
+                                                title="Control panel"
+                                                role="button"
+                                                id="admin-panel-button"
+                                                className="p-1 pb-0"
+                                            >
+                                                <i className="bi bi-speedometer2 fs-5"></i>
+                                            </Link>
+                                        ) : null}
+
                                         {user !== null ? (
                                             <div className="dropdown">
                                                 <div
@@ -205,7 +212,7 @@ export default function Layout() {
                                                     aria-expanded="false"
                                                     onClick={() => {
                                                         setIsAccountNavOpen(
-                                                            (val) => !val
+                                                            (val) => !val,
                                                         );
                                                     }}
                                                 >
@@ -304,7 +311,9 @@ export default function Layout() {
                 <Outlet />
             </main>
 
-            <footer className={`footer border-top border-2 shadow-sm ${!isHeroPage ? "mt-2" : ""}`}>
+            <footer
+                className={`footer border-top border-2 shadow-sm ${!isHeroPage ? "mt-2" : ""}`}
+            >
                 <Footer />
             </footer>
         </>
